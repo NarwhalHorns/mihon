@@ -1,0 +1,40 @@
+import kotlin.collections.List;
+import kotlin.String;
+
+CREATE VIRTUAL TABLE mangasFTS USING fts4(
+    content="mangas",
+    artist TEXT,
+    author TEXT,
+    description TEXT,
+    genre TEXT AS List<String>,
+    title TEXT,
+);
+
+CREATE TRIGGER insert_sync
+AFTER UPDATE ON mangas
+WHEN new.favorite = 1
+BEGIN
+    INSERT INTO mangasFTS(docid, artist, author, description, genre, title)
+    VALUES(new._id, new.artist, new.author, new.description, new.genre, new.title);
+END;
+
+CREATE TRIGGER delete_sync
+BEFORE DELETE ON mangas
+BEGIN
+    DELETE FROM mangasFTS
+    WHERE docid = old._id;
+END;
+
+CREATE TRIGGER update_sync_before
+BEFORE UPDATE OF artist, author, description, genre, title ON mangas
+BEGIN
+    DELETE FROM mangasFTS
+    WHERE docid = old._id;
+END;
+
+CREATE TRIGGER update_sync_after
+AFTER UPDATE OF artist, author, description, genre, title ON mangas
+BEGIN
+    INSERT INTO mangasFTS(docid, artist, author, description, genre, title)
+    VALUES(new._id, new.artist, new.author, new.description, new.genre, new.title);
+END;
