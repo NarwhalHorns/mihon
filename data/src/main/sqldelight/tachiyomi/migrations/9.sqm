@@ -39,8 +39,4 @@ BEGIN
     VALUES(new._id, new.artist, new.author, new.description, new.genre, new.title, new.notes);
 END;
 
-rebuildMangasFTS:
 INSERT INTO mangasFTS(mangasFTS) VALUES ('rebuild');
-
-optimizeMangasFTS:
-INSERT INTO mangasFTS(mangasFTS)  VALUES('optimize');
