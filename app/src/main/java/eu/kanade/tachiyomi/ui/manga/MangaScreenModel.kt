@@ -478,7 +478,7 @@ class MangaScreenModel(
 
     private fun observeDownloads() {
         screenModelScope.launchIO {
-            downloadManager.statusFlow()
+            downloadManager.downloadingStatusFlow()
                 .filter { it.manga.id == successState?.manga?.id }
                 .catch { error -> logcat(LogPriority.ERROR, error) }
                 .flowWithLifecycle(lifecycle)

@@ -425,6 +425,20 @@ class DownloadManager(
         }
         .onStart {
             emitAll(
+                queueState.value.asFlow(),
+            )
+        }
+
+    fun downloadingStatusFlow(): Flow<Download> = queueState
+        .flatMapLatest { downloads ->
+            downloads
+                .map { download ->
+                    download.statusFlow.drop(1).map { download }
+                }
+                .merge()
+        }
+        .onStart {
+            emitAll(
                 queueState.value.filter { download -> download.status == Download.State.DOWNLOADING }.asFlow(),
             )
         }

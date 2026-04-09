@@ -29,17 +29,29 @@
             app:tint="?android:attr/textColorHint"
             tools:ignore="ContentDescription" />
 
+        <ImageView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            app:layout_constraintStart_toEndOf="@id/reorder"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/chapter_title"
+            android:background="@drawable/ic_pause_24dp"
+            android:backgroundTint="?android:attr/textColorSecondary"
+            tools:ignore="ContentDescription" />
+
         <TextView
             android:id="@+id/manga_full_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_toEndOf="@id/reorder"
+            android:layout_marginHorizontal="5dp"
+            android:layout_toEndOf="@id/status"
             android:ellipsize="end"
             android:maxLines="1"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             app:layout_constraintEnd_toStartOf="@+id/download_progress_text"
-            app:layout_constraintStart_toEndOf="@+id/reorder"
+            app:layout_constraintStart_toEndOf="@+id/status"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Manga title" />
 
@@ -48,7 +60,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/reorder"
+            android:layout_toEndOf="@id/status"
             android:ellipsize="end"
             android:maxLines="1"
             android:textAppearance="?attr/textAppearanceBodyMedium"

@@ -142,8 +142,9 @@ class DownloadQueueScreenModel(
     val isDownloaderRunning = downloadManager.isDownloaderRunning
         .stateIn(screenModelScope, SharingStarted.WhileSubscribed(5000), false)
 
-    fun getDownloadStatusFlow() = downloadManager.statusFlow()
+    fun getDownloadingStatusFlow() = downloadManager.downloadingStatusFlow()
     fun getDownloadProgressFlow() = downloadManager.progressFlow()
+    fun getDownloadStatusFlow() = downloadManager.statusFlow()
 
     fun startDownloads() {
         downloadManager.startDownloads()
@@ -255,6 +256,15 @@ class DownloadQueueScreenModel(
      */
     fun onUpdateDownloadedPages(download: Download) {
         getHolder(download)?.notifyDownloadedPages()
+    }
+
+    /**
+     * Called when the progress of a download changes.
+     *
+     * @param download the download whose page has been downloaded.
+     */
+    fun onUpdateDownloadStatus(download: Download) {
+        getHolder(download)?.notifyDownloadStatus()
     }
 
     /**

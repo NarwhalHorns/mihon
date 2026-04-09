@@ -1,5 +1,6 @@
 package eu.kanade.tachiyomi.ui.download
 
+import android.graphics.drawable.AnimationDrawable
 import android.view.View
 import androidx.recyclerview.widget.ItemTouchHelper
 import eu.davidea.viewholders.FlexibleViewHolder
@@ -26,6 +27,7 @@ class DownloadHolder(private val view: View, val adapter: DownloadAdapter) :
     }
 
     private lateinit var download: Download
+    private lateinit var downloadAnimation: AnimationDrawable
 
     /**
      * Binds this holder with the given category.
@@ -39,6 +41,8 @@ class DownloadHolder(private val view: View, val adapter: DownloadAdapter) :
 
         // Update the manga title
         binding.mangaFullTitle.text = download.manga.title
+
+        notifyDownloadStatus()
 
         // Update the progress bar and the number of downloaded pages
         val pages = download.pages
@@ -70,6 +74,22 @@ class DownloadHolder(private val view: View, val adapter: DownloadAdapter) :
     fun notifyDownloadedPages() {
         val pages = download.pages ?: return
         binding.downloadProgressText.text = "${download.downloadedImages}/${pages.size}"
+    }
+
+    /**
+     * Updates the status icon of the download.
+     */
+    fun notifyDownloadStatus() {
+        when (download.status) {
+            Download.State.DOWNLOADING -> {
+                binding.status.setBackgroundResource(R.drawable.ic_stat_download_progress)
+                downloadAnimation = binding.status.background as AnimationDrawable
+                downloadAnimation.start()
+            }
+            Download.State.QUEUE -> binding.status.setBackgroundResource(R.drawable.ic_pause_24dp)
+            Download.State.ERROR -> binding.status.setBackgroundResource(R.drawable.ic_warning_white_24dp)
+            else -> {}
+        }
     }
 
     override fun onItemReleased(position: Int) {

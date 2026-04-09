@@ -119,7 +119,7 @@ class UpdatesScreenModel(
         }
 
         screenModelScope.launchIO {
-            merge(downloadManager.statusFlow(), downloadManager.progressFlow())
+            merge(downloadManager.downloadingStatusFlow(), downloadManager.progressFlow())
                 .catch { logcat(LogPriority.ERROR, it) }
                 .collect(this@UpdatesScreenModel::updateDownloadState)
         }
